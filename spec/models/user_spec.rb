@@ -26,14 +26,4 @@ RSpec.describe User, type: :model do
             expect(user_with_invalid_email).to_not be_valid
         end
     end
-
-    describe "email confirmation" do
-        before do
-            @new_user = FactoryGirl.create(:user)
-        end
-
-        it "should send an email confirmation after creation" do
-            expect(Devise.mailer.deliveries.last).to eq(@new_user.email)
-        end
-    end
 end
