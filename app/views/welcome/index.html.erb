@@ -1,2 +1,43 @@
-<h1>Welcome#index</h1>
-<p>Find me in app/views/welcome/index.html.erb</p>
+<div class="page-header text-center">
+    <h1>WikiPages: Social, Markdown Wikis</h1>
+</div>
+
+<div class="row">
+    <div class="jumbotron text-center col-md-10 col-md-offset-1">
+        <h2>Create and share Markdown Wikis</h2>
+        <p>
+            <%= link_to "Log In", new_user_session_path %> or
+            <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary" %> today!
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-6 text-center">
+            <h3>Free Plan</h3>
+            <div style="padding:2rem;">
+                <i style="font-size:8rem;" class="glyphicon glyphicon-duplicate"></i>
+            </div>
+            <div class="text-left col-md-6 col-md-offset-3">
+                <p><i class="glyphicon glyphicon-ok-circle landing-feature"></i> Unlimited public wikis</p>
+                <p><i class="glyphicon glyphicon-ok-circle landing-feature"></i> Collaborate with friends</p>
+                <p><i class="glyphicon glyphicon-remove-circle landing-feature"></i> Create private wikis</p>
+                <p><i class="glyphicon glyphicon-remove-circle landing-feature"></i> Ad free</p>
+            </div>
+        </div>
+
+        <div class="col-md-6 text-center">
+            <h3>Premium Plan</h3>
+            <div style="padding:2rem;">
+                <i style="font-size:8rem;" class="glyphicon glyphicon-usd"></i>
+            </div>
+            <div class="text-left col-md-6 col-md-offset-3">
+                <p><i class="glyphicon glyphicon-ok-circle landing-feature"></i> Unlimited public wikis</p>
+                <p><i class="glyphicon glyphicon-ok-circle landing-feature"></i> Collaborate with friends</p>
+                <p><i class="glyphicon glyphicon-ok-circle landing-feature"></i> Create private wikis</p>
+                <p><i class="glyphicon glyphicon-ok-circle landing-feature"></i> Ad free</p>
+            </div>
+        </div>
+    </div>
+</div>
