@@ -31,9 +31,29 @@ class WikisController < ApplicationController
     end
 
     def update
+        @wiki = Wiki.find(params[:id])
+
+        @wiki.assign_attributes(wiki_params)
+
+        if @wiki.save
+            flash[:notice] = "Wiki was successfully updated."
+            redirect_to @wiki
+        else
+            flash.now[:alert] = "Error updating wiki. Please try again."
+            render :edit
+        end
     end
 
     def destroy
+        @wiki = Wiki.find(params[:id])
+
+        if @wiki.destroy
+            flash[:notice] = "Wiki was successfully deleted."
+            redirect_to action: :index
+        else
+            flash.now[:alert] = "There was an error deleting the wiki."
+            render :show
+        end
     end
 
     private
