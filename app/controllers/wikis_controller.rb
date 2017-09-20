@@ -1,5 +1,5 @@
 class WikisController < ApplicationController
-    before_action :authorize_user, expect: [:index, :show, :new, :create]
+    before_action :authorize_user, except: [:index, :show, :new, :create]
 
     def index
         @wikis = Wiki.all
