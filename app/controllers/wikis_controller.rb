@@ -1,8 +1,8 @@
 class WikisController < ApplicationController
-    before_action :authorize_user, except: [:index, :show, :new, :create]
+    before_action :authorize_user, only: [:edit, :update, :destroy]
 
     def index
-        @wikis = Wiki.all
+        @wikis = Wiki.visible_to_user(current_user).all
     end
 
     def show
@@ -64,7 +64,7 @@ class WikisController < ApplicationController
     def authorize_user
         wiki = Wiki.find(params[:id])
 
-        unless wiki.user == current_user
+        unless current_user == wiki.user
             flash[:alert] = "You are not allowed to do that."
             redirect_to wiki
         end

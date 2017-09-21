@@ -1,3 +1,9 @@
 // Place all the styles related to the Wikis controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.new-div, .edit-div {
+    text-align: right;
+}
+.new-button, .edit-button {
+    margin: 20px 10px 0px 0px;
+}
