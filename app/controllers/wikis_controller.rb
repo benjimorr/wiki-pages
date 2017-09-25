@@ -1,20 +1,24 @@
 class WikisController < ApplicationController
-    before_action :authorize_user, only: [:edit, :update, :destroy]
+    after_action :verify_authorized
 
     def index
-        @wikis = Wiki.visible_to_user(current_user).all
+        @wikis = policy_scope(Wiki)
+        authorize @wikis
     end
 
     def show
         @wiki = Wiki.find(params[:id])
+        authorize @wiki
     end
 
     def new
         @wiki = Wiki.new
+        authorize @wiki
     end
 
     def create
         @wiki = Wiki.new(wiki_params)
+        authorize @wiki
         @wiki.user = current_user
 
         if @wiki.save
@@ -28,11 +32,12 @@ class WikisController < ApplicationController
 
     def edit
         @wiki = Wiki.find(params[:id])
+        authorize @wiki
     end
 
     def update
         @wiki = Wiki.find(params[:id])
-
+        authorize @wiki
         @wiki.assign_attributes(wiki_params)
 
         if @wiki.save
@@ -46,9 +51,10 @@ class WikisController < ApplicationController
 
     def destroy
         @wiki = Wiki.find(params[:id])
+        authorize @wiki
 
         if @wiki.destroy
-            flash[:notice] = "Wiki was successfully deleted."
+            flash[:notice] = "#{@wiki.title} was successfully deleted."
             redirect_to action: :index
         else
             flash.now[:alert] = "There was an error deleting the wiki."
@@ -59,14 +65,5 @@ class WikisController < ApplicationController
     private
     def wiki_params
         params.require(:wiki).permit(:title, :body, :private)
-    end
-
-    def authorize_user
-        wiki = Wiki.find(params[:id])
-
-        unless current_user == wiki.user
-            flash[:alert] = "You are not allowed to do that."
-            redirect_to wiki
-        end
     end
 end

@@ -24,9 +24,11 @@
                 <%= f.text_area :body, rows: 8, class: "form-control", placeholder: "Enter wiki body" %>
             <% end %>
 
-            <%= form_group_tag(@wiki.errors[:private]) do %>
-                <%= f.label :private, class: "checkbox" do %>
-                    <%= f.check_box :private %> Private wiki
+            <% if current_user.admin? || current_user.premium? %>
+                <%= form_group_tag(@wiki.errors[:private]) do %>
+                    <%= f.label :private, class: "checkbox" do %>
+                        <%= f.check_box :private %> Private wiki
+                    <% end %>
                 <% end %>
             <% end %>
         </div>
@@ -36,8 +38,8 @@
     </div>
 
     <div class="row">
-        <div class="col-md-4 pull-right">
-            <%= f.submit "Create Wiki", class: "btn btn-success" %>
+        <div class="col-md-4 pull-right new-div">
+            <%= f.submit "Create Wiki", class: "btn btn-success new-button" %>
         </div>
     </div>
 <% end%>

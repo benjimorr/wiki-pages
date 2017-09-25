@@ -12,7 +12,8 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th class="col-md-8">Name</th>
+                    <th class="col-md-6">Name</th>
+                    <th class="col-md-2">Private?</th>
                     <th class="col-md-2">Edit Wiki</th>
                     <th class="col-md-2">Delete Wiki</th>
                 </tr>
@@ -20,9 +21,28 @@
             <tbody>
                 <% @wikis.each do |wiki| %>
                     <tr>
-                        <td class="col-md-8"><%= link_to wiki.title, wiki %></td>
-                        <td class="col-md-2"><%= link_to "Edit", edit_wiki_path(wiki), class: "btn btn-success" %></td>
-                        <td class="col-md-2"><%= link_to "Delete", wiki, method: :delete, class: "btn btn-danger", data: { confirm: 'Are you sure you want to delete this wiki?' } %></td>
+                        <td class="col-md-6"><%= link_to wiki.title, wiki %></td>
+                        <td class="col-md-2">
+                            <% if wiki.private %>
+                                Yes
+                            <% else %>
+                                No
+                            <% end %>
+                        </td>
+                        <td class="col-md-2">
+                            <% if policy(wiki).update? %>
+                                <%= link_to "Edit", edit_wiki_path(wiki), class: "btn btn-success" %>
+                            <% else %>
+                                You cannot edit this wiki.
+                            <% end %>
+                        </td>
+                        <td class="col-md-2">
+                            <% if policy(wiki).destroy? %>
+                                <%= link_to "Delete", wiki, method: :delete, class: "btn btn-danger", data: { confirm: 'Are you sure you want to delete this wiki?' } %>
+                            <% else %>
+                                You cannot delete this wiki.
+                            <% end %>
+                        </td>
                     </tr>
                 <% end %>
             </tbody>
