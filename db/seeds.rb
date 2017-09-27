@@ -16,7 +16,7 @@ users = User.all
 100.times do
     Wiki.create!(
         title: Faker::Lorem.sentence,
-        body: Faker::Lorem.paragraphs,
+        body: Faker::Lorem.paragraph,
         private: [true, false].sample,
         user: users.sample
     )

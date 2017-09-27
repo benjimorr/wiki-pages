@@ -1,6 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe ChargesController, type: :controller do
+  let(:my_user) { create(:user) }
+
+  before(:each) do
+    @request.env["devise.mapping"] = Devise.mappings[:user]
+    my_user.confirm
+    sign_in my_user
+  end
 
   describe "GET #new" do
     it "returns http success" do
@@ -8,12 +15,4 @@ RSpec.describe ChargesController, type: :controller do
       expect(response).to have_http_status(:success)
     end
   end
-
-  describe "GET #create" do
-    it "returns http success" do
-      get :create
-      expect(response).to have_http_status(:success)
-    end
-  end
-
 end

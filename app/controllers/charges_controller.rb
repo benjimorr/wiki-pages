@@ -2,8 +2,8 @@ class ChargesController < ApplicationController
     def new
         @stripe_btn_data = {
             key: "#{ Rails.configuration.stripe[:publishable_key] }",
-            description: "BigMoney Membership - #{current_user.email}",
-            amount: Amount.default
+            description: "Upgrade to Premium",
+            amount: charge_amount
         }
     end
 
@@ -17,15 +17,15 @@ class ChargesController < ApplicationController
         # Creates the charge object
         charge = Stripe::Charge.create(
             customer: customer.id,
-            amount: Amount.default,
-            description: "BigMoney Membership - #{current_user.email}",
+            amount: charge_amount,
+            description: "Upgrade to Premium - #{current_user.email}",
             currency: 'usd'
         )
 
         # Upgrades user account
         current_user.premium!
 
-        flash[:notice] = "Thanks for all the money, #{current_user.email}! Feel free to pay me again."
+        flash[:notice] = "Thanks for upgrading, #{current_user.email}! You are now a premium member."
         redirect_to root_path
 
         # Catches and displays errors.
@@ -33,13 +33,15 @@ class ChargesController < ApplicationController
         flash[:alert] = e.message
         redirect_to new_charge_path
     end
-end
 
-class Amount
-    def initialize
+    def downgrade
+        current_user.standard!
+        flash[:notice] = "You have been successfully downgraded. You are now a standard member."
+        redirect_to root_path
     end
 
-    def default
+    private
+    def charge_amount
         15_00
     end
 end

@@ -16,7 +16,7 @@ class WikiPolicy < ApplicationPolicy
 
     def update?
         if wiki.private
-            user.admin? || user.id == wiki.user_id
+            user.admin? || user.premium? || user.id == wiki.user_id
         else
             user.present?
         end

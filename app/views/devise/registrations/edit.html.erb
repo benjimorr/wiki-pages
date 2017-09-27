@@ -38,8 +38,15 @@
             </div>
         <% end %>
 
-        <h3>Cancel my account</h3>
+        <h3>Account Status</h3>
+        <p>Your current membership is: <b><%= current_user.role %></b></p>
+        <% if current_user.standard? %>
+            <%= link_to "Click here to upgrade your account to premium", new_charge_path, class: 'btn btn-primary' %>
+        <% elsif current_user.premium? %>
+            <p>No longer wish to be a premium member? You can <%= link_to "click here", charges_downgrade_path, method: :post %> to downgrade your account.</p>
+        <% end %>
 
+        <h3>Cancel my account</h3>
         <p>Unhappy? We'd hate to see you go! <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "btn btn-danger" %></p>
 
         <%= link_to "Back", :back %>
