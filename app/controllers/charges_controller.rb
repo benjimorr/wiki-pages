@@ -35,6 +35,11 @@ class ChargesController < ApplicationController
     end
 
     def downgrade
+        user_wikis = Wiki.where(user_id = current_user.id)
+        user_wikis.each do |wiki|
+            wiki.private = false
+            wiki.save
+        end
         current_user.standard!
         flash[:notice] = "You have been successfully downgraded. You are now a standard member."
         redirect_to root_path
