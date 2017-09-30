@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-8">
-        <h1><%= @wiki.title %></h1>
+        <h1><%= render_markdown(@wiki.title) %></h1>
         <h4>
             submitted <%= time_ago_in_words(@wiki.created_at) %> ago by <%= @wiki.user.email %>
         </h4>
@@ -16,6 +16,6 @@
 <br />
 <div class="row">
     <div class="col-md-12">
-        <p><%= @wiki.body %></p>
+        <%= render_markdown(@wiki.body) %>
     </div>
 </div>

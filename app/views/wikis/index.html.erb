@@ -21,7 +21,7 @@
             <tbody>
                 <% @wikis.each do |wiki| %>
                     <tr>
-                        <td class="col-md-6"><%= link_to wiki.title, wiki %></td>
+                        <td class="col-md-6"><%= link_to render_markdown(wiki.title), wiki %></td>
                         <td class="col-md-2">
                             <% if wiki.private %>
                                 Yes

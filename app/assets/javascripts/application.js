@@ -15,3 +15,8 @@
 //= require turbolinks
 //= require bootstrap
 //= require_tree .
+
+// $('.input').keyup(function(){
+//    var $this = $(this);
+//    $('.'+$this.attr('id')+'').html($this.val());
+// });
