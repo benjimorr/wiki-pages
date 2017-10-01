@@ -11,7 +11,7 @@
     <% end %>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <h3>Edit Wiki Here</h3>
             <h4>(you can use Markdown!)</h4>
             <%= form_group_tag(wiki.errors[:title]) do %>
@@ -21,7 +21,9 @@
 
             <%= form_group_tag(wiki.errors[:body]) do %>
                 <%= f.label :body %>
-                <%= f.text_area :body, rows: 8, class: "form-control", placeholder: "Enter wiki body" %>
+                <%= md_simple_editor  do %>
+                    <%= f.text_area :body, rows: 10, class: "form-control", placeholder: "Enter wiki body" %>
+                <% end %>
             <% end %>
 
             <% if current_user.admin? || current_user.premium? %>
@@ -32,15 +34,15 @@
                 <% end %>
             <% end %>
         </div>
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
             <h3>Preview</h3>
             <br />
-            <!-- <h4><%= render_markdown(wiki.title) %></h4> -->
+            <h4><%= render_markdown(wiki.title) %></h4>
             <h4><div id="title-preview"></div></h4>
             <br />
-            <!-- <%= render_markdown(wiki.body) %> -->
+            <%= render_markdown(wiki.body) %>
             <div id="body-preview"></div>
-        </div>
+        </div> -->
     </div>
 
     <div class="row">
@@ -48,4 +50,4 @@
             <%= f.submit "Save Wiki", class: "btn btn-success submit-button" %>
         </div>
     </div>
-<% end%>
+<% end %>
