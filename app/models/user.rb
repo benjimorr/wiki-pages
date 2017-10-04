@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
   has_many :collaborators, dependent: :destroy
   has_many :wikis, through: :collaborators, dependent: :destroy
 
+  delegate :wikis, to: :collaborators
+
   after_initialize { self.role ||= :standard }
 
   devise :database_authenticatable, :registerable,
