@@ -2,7 +2,7 @@ class CollaboratorsController < ApplicationController
     def index
     end
 
-    def update
+    def create
     end
 
     def destroy

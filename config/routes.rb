@@ -1,10 +1,4 @@
 Rails.application.routes.draw do
-  get 'collaborators/index'
-
-  get 'collaborators/update'
-
-  get 'collaborators/destroy'
-
   resources :charges, only: [:new, :create]
   post 'charges/downgrade', :to => 'charges#downgrade'
 
