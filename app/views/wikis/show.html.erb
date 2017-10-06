@@ -7,7 +7,7 @@
     </div>
     <div class="col-md-4 edit-div">
         <%= link_to "Edit Wiki", edit_wiki_path(@wiki), class: "btn btn-success edit-button" %>
-        <% if current_user.id == @wiki.user_id %>
+        <% if policy(@wiki).destroy? %>
             <%= link_to "Delete Wiki", @wiki, method: :delete, class: "btn btn-danger edit-button", data: { confirm: 'Are you sure you want to delete this wiki?' } %>
         <% end %>
     </div>
@@ -15,7 +15,26 @@
 <br />
 <br />
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-10">
         <%= render_markdown(@wiki.body) %>
+    </div>
+    <div class="col-md-2">
+        <h3>Collaborators</h3>
+
+        <% if current_user.id == @wiki.user_id || @wiki.collaborators.include?(current_user) || current_user.admin? %>
+            <% if @wiki.collaborators.size == 0 %>
+                <p>No collaborators for this wiki</p>
+            <% else %>
+                <% @wiki.collaborators.each do |collaborator| %>
+                    <p><em><%= collaborator.user.email %></em> (<%= link_to "Remove", wiki_collaborator_path(@wiki, collaborator), method: :delete, data: { confirm: 'Are you sure you want to remove this collaborator?' } %>)</p>
+                <% end %>
+            <% end %>
+        <% else %>
+            <p>You do not have permission to see collaborators for this wiki. You must be a premium user and be added to collaborate by the wiki author.</p>
+        <% end %>
+
+        <% if current_user.id == @wiki.user_id || current_user.admin? %>
+            <%= link_to "Add Collaborator", new_wiki_collaborator_path(@wiki), class: 'btn btn-primary' %>
+        <% end %>
     </div>
 </div>
