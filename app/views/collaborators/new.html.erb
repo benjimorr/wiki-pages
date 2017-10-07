@@ -1,2 +1,30 @@
-<h1>Collaborators#new</h1>
-<p>Find me in app/views/collaborators/new.html.erb</p>
+<h1>Add Collaborators to <%= @wiki.title %></h1>
+<div class="row">
+    <div class="col-md-8">
+        <p>Select a user from the table below in order to add them as a collaborator. This will allow the user edit access.</p>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col-md-8">User Email Address</th>
+                    <th class="col-md-4">Add</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% User.all.each do |user| %>
+                    <% if !@wiki.collaborators.include?(user) || user != @wiki.user %>
+                        <tr>
+                            <td class="col-md-10"><%= user.email %></td>
+                            <td class="col-md-2"><%= link_to "Add as Collaborator", wiki_collaborators_path(:collaborator => { :user_id => user.id, :wiki_id => @wiki.id }), method: :post, class: 'btn btn-success' %></td>
+                        </tr>
+                    <% else %>
+                        <tr>
+                            <td class="col-md-10"><%= user.email %></td>
+                            <td class="col-md-2">Already a collaborator</td>
+                        </tr>
+                    <% end %>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+</div>

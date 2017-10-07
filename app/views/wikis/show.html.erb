@@ -21,7 +21,7 @@
     <div class="col-md-2">
         <h3>Collaborators</h3>
 
-        <% if current_user.id == @wiki.user_id || @wiki.collaborators.include?(current_user) || current_user.admin? %>
+        <% if (current_user.id == @wiki.user_id && current_user.premium?) || @wiki.collaborators.include?(current_user) || current_user.admin? %>
             <% if @wiki.collaborators.size == 0 %>
                 <p>No collaborators for this wiki</p>
             <% else %>
@@ -30,10 +30,10 @@
                 <% end %>
             <% end %>
         <% else %>
-            <p>You do not have permission to see collaborators for this wiki. You must be a premium user and be added to collaborate by the wiki author.</p>
+            <p>You do not have permission to see collaborators for this wiki. You must be a premium user and/or be added to collaborate by the wiki author.</p>
         <% end %>
 
-        <% if current_user.id == @wiki.user_id || current_user.admin? %>
+        <% if (current_user.id == @wiki.user_id && current_user.premium?) || current_user.admin? %>
             <%= link_to "Add Collaborator", new_wiki_collaborator_path(@wiki), class: 'btn btn-primary' %>
         <% end %>
     </div>

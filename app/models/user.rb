@@ -1,8 +1,10 @@
 class User < ActiveRecord::Base
+  attr_accessor :current_wiki
+
   has_many :collaborators, dependent: :destroy
   has_many :wikis, through: :collaborators, dependent: :destroy
 
-  delegate :wikis, to: :collaborators
+  #delegate :wikis, to: :collaborators
 
   after_initialize { self.role ||= :standard }
 

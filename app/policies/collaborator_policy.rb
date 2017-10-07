@@ -7,14 +7,14 @@ class CollaboratorPolicy < ApplicationPolicy
     end
 
     def new?
-        user.admin? || user.id == collaborator.wiki.user_id
+        user.admin? || (user.id == user.current_wiki.user_id && user.premium?)
     end
 
     def create?
-        user.admin? || user.id == collaborator.wiki.user_id
+        user.admin? || (user.id == user.current_wiki.user_id && user.premium?)
     end
 
     def destroy?
-        user.admin? || user.id == collaborator.wiki.user_id
+        user.admin? || (user.id == user.current_wiki.user_id && user.premium?)
     end
 end

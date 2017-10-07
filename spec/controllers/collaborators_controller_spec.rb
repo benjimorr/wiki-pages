@@ -8,7 +8,6 @@ RSpec.describe CollaboratorsController, type: :controller do
     let(:wiki) { create(:wiki, private: true, user: user) }
     let(:other_wiki) { create(:wiki, private: true, user: other_user) }
     let(:collaborator) { Collaborator.create!(wiki: wiki, user: other_user) }
-    let(:standard_collaborator) { Collaborator.create!(wiki: wiki, user: standard_user) }
     let(:other_collaborator) { Collaborator.create!(wiki: other_wiki, user: admin_user) }
 
     context "guest user using collaborators" do
@@ -34,7 +33,7 @@ RSpec.describe CollaboratorsController, type: :controller do
         end
     end
 
-    context "standard user using collaborators on a private wiki they are not added to" do
+    context "standard user using collaborators CRUD on a private wiki" do
         before(:each) do
             @request.env["devise.mapping"] = Devise.mappings[:user]
             standard_user.confirm
@@ -50,7 +49,7 @@ RSpec.describe CollaboratorsController, type: :controller do
 
         describe "POST #create" do
             it "returns http redirect" do
-                post :create, wiki_id: wiki.id, collaborator: {wiki: wiki, user: standard_user}
+                post :create, wiki_id: wiki.id, collaborator: {wiki: wiki, user: other_user}
                 expect(response).to redirect_to(request.referrer || root_path)
             end
         end
@@ -63,36 +62,7 @@ RSpec.describe CollaboratorsController, type: :controller do
         end
     end
 
-    context "standard user using collaborators on a private wiki they are added to" do
-        before(:each) do
-            @request.env["devise.mapping"] = Devise.mappings[:user]
-            standard_user.confirm
-            sign_in standard_user
-        end
-
-        describe "GET #new" do
-            it "returns http redirect" do
-                get :new, wiki_id: wiki.id
-                expect(response).to redirect_to(request.referrer || root_path)
-            end
-        end
-
-        describe "POST #create" do
-            it "returns http redirect" do
-                post :create, wiki_id: wiki.id, collaborator: {wiki: wiki, user: standard_user}
-                expect(response).to redirect_to(request.referrer || root_path)
-            end
-        end
-
-        describe "DELETE #destroy" do
-            it "returns http redirect" do
-                delete :destroy, wiki_id: wiki.id, id: collaborator.id
-                expect(response).to redirect_to(request.referrer || root_path)
-            end
-        end
-    end
-
-    context "premium user using collaborators on a private wiki they own" do
+    context "premium user using collaborators CRUD on a private wiki they own" do
         before(:each) do
             @request.env["devise.mapping"] = Devise.mappings[:user]
             user.confirm
@@ -146,36 +116,7 @@ RSpec.describe CollaboratorsController, type: :controller do
         end
     end
 
-    context "premium user using collaborators on a private wiki they are added to" do
-        before(:each) do
-            @request.env["devise.mapping"] = Devise.mappings[:user]
-            other_user.confirm
-            sign_in other_user
-        end
-
-        describe "GET #new" do
-            it "returns http redirect" do
-                get :new, wiki_id: wiki.id
-                expect(response).to redirect_to(request.referrer || root_path)
-            end
-        end
-
-        describe "POST #create" do
-            it "returns http redirect" do
-                post :create, wiki_id: wiki.id, collaborator: {wiki: wiki, user: other_user}
-                expect(response).to redirect_to(request.referrer || root_path)
-            end
-        end
-
-        describe "DELETE #destroy" do
-            it "returns http redirect" do
-                delete :destroy, wiki_id: wiki.id, id: collaborator.id
-                expect(response).to redirect_to(request.referrer || root_path)
-            end
-        end
-    end
-
-    context "premium user using collaborators on a private wiki they are not added to" do
+    context "premium user using collaborators CRUD on a private wiki they don't own" do
         before(:each) do
             @request.env["devise.mapping"] = Devise.mappings[:user]
             user.confirm
@@ -191,7 +132,7 @@ RSpec.describe CollaboratorsController, type: :controller do
 
         describe "POST #create" do
             it "returns http redirect" do
-                post :create, wiki_id: other_wiki.id, collaborator: {wiki: other_wiki, user: user}
+                post :create, wiki_id: other_wiki.id, collaborator: {wiki: other_wiki, user: admin_user}
                 expect(response).to redirect_to(request.referrer || root_path)
             end
         end
@@ -204,7 +145,7 @@ RSpec.describe CollaboratorsController, type: :controller do
         end
     end
 
-    context "admin user using collaborators on any wiki" do
+    context "admin user using collaborators CRUD on any wiki" do
         before(:each) do
             @request.env["devise.mapping"] = Devise.mappings[:user]
             admin_user.confirm

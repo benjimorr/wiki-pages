@@ -24,14 +24,26 @@ end
     new_user.premium!
 end
 
+# Admin User
 my_user = User.new({email: 'benmorrison0@gmail.com', password: 'bsm11bc16', password_confirmation: 'bsm11bc16'})
 my_user.confirm
 my_user.save
 my_user.admin!
 
+# Premium User
+premium_user = User.new({email: 'premium@wikipages.com', password: 'password', password_confirmation: "password"})
+premium_user.confirm
+premium_user.save
+premium_user.premium!
+
+# Standard User
+standard_user = User.new({email: 'standard@wikipages.com', password: 'password', password_confirmation: "password"})
+standard_user.confirm
+standard_user.save
+
 standard_users = User.where(role: 0)
 premium_users = User.where(role: 1)
-premium_users << my_user
+premium_users << premium_user
 
 # Create public wikis:
 45.times do
