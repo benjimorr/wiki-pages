@@ -8,7 +8,7 @@ class WikiPolicy < ApplicationPolicy
 
     def show?
         if wiki.private
-            user.admin? || wiki.collaborators.include?(user) || user.id == wiki.user_id
+            user.admin? || wiki.collaborators.users.ids.include?(user.id) || user.id == wiki.user_id
         else
             user.present?
         end
@@ -16,7 +16,7 @@ class WikiPolicy < ApplicationPolicy
 
     def update?
         if wiki.private
-            user.admin? || wiki.collaborators.include?(user) || user.id == wiki.user_id
+            user.admin? || wiki.collaborators.users.ids.include?(user.id) || user.id == wiki.user_id
         else
             user.present?
         end
@@ -41,7 +41,7 @@ class WikiPolicy < ApplicationPolicy
             else
                 all_wikis = scope.all
                 all_wikis.each do |wiki|
-                    if !wiki.private || wiki.user_id == user.id || wiki.collaborators.include?(user)
+                    if !wiki.private || wiki.user_id == user.id || wiki.collaborators.users.ids.include?(user.id)
                         wikis << wiki
                     end
                 end

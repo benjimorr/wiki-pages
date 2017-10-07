@@ -13,7 +13,10 @@ class CollaboratorsController < ApplicationController
         @collaborator = Collaborator.new(collaborator_params)
         authorize @collaborator
 
-        if @collaborator.save
+        if Collaborator.where(["wiki_id = ? and user_id = ?", @wiki.id, @collaborator.user_id]).length > 0
+            flash.now[:alert] = "That user is already a collaborator of this wiki."
+            render :new
+        elsif @collaborator.save
             flash[:notice] = "Collaborator was successfully created."
             redirect_to @wiki
         else
